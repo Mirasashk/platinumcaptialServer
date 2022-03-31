@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
+const path = require('path');
 
 const corsOptions = {
   origin: '*',
@@ -23,6 +24,8 @@ mongoose.connect(
 );
 
 app.use(cors(corsOptions));
+// Serve static files
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(
   bodyParser.urlencoded({
@@ -42,6 +45,16 @@ app.use(
 // Import Routes
 require('./routes/userRoutes')(app);
 require('./routes/leadRoutes')(app);
+
+app.get('/api/', (req, res) => {
+  return res.status(200).json({
+    status: 'success',
+  });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

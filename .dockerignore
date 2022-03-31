@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # npm dependencies
 node_modules/
 
@@ -6,3 +7,12 @@ node_modules/
 .gitignore
 
 platinumCap.pem
+=======
+# npm dependencies
+node_modules/
+
+
+# git
+.git
+.gitignore
+>>>>>>> a5a75a8c52ab62e2bd7481d1203a18bbff32e120

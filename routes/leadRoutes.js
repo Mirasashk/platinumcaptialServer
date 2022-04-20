@@ -3,7 +3,7 @@ const leadsMiddleWare = require('../middlewares/leadsMiddleWare');
 const { Schema } = mongoose;
 
 module.exports = (app) => {
-  app.post(`/api/lead/lookup`, async (req, res) => {
+  app.post(`/lead/lookup`, async (req, res) => {
     console.log('Looking up leads');
     console.log(req.body);
 
@@ -16,7 +16,7 @@ module.exports = (app) => {
     });
   });
 
-  app.post(`/api/leads/leadDetails`, async (req, res) => {
+  app.post(`/leads/leadDetails`, async (req, res) => {
     console.log(req.body);
     let lead = await leadsMiddleWare.leadDetails(req);
 
@@ -27,7 +27,7 @@ module.exports = (app) => {
     });
   });
 
-  app.post(`/api/leads`, async (req, res) => {
+  app.post(`/leads`, async (req, res) => {
     console.log(`request for leads in ${req.body.name}`);
     try {
       let collectionName = req.body.name;
@@ -47,7 +47,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post(`/api/db/createCollection`, async (req, res) => {
+  app.post(`/db/createCollection`, async (req, res) => {
     const nameOfCollection = req.body.name;
     try {
       if (nameOfCollection == '') {
@@ -71,7 +71,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get(`/api/db/collections`, async (req, res) => {
+  app.get(`/db/collections`, async (req, res) => {
     try {
       const dbCollections = await mongoose.connection.db
         .listCollections()
@@ -101,7 +101,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post(`/api/leads/uploadFile`, async (req, res) => {
+  app.post(`/leads/uploadFile`, async (req, res) => {
     try {
       if (!req.files) {
         res.send({
@@ -122,7 +122,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post(`/api/leads/uploadData`, async (req, res) => {
+  app.post(`/leads/uploadData`, async (req, res) => {
     try {
       mongoose.connection.db
         .collection(`${req.body.collection}`)

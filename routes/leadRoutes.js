@@ -71,6 +71,22 @@ module.exports = (app) => {
     }
   });
 
+  app.post(`/db/collection/delete`, async (req, res) => {
+    console.log(req.body);
+    console.log(`Deleting the collection ${req.body.collectionName}`);
+    try {
+      let collectionName = leadsMiddleWare.collectionDelete(req);
+
+      return res.status(201).send({
+        error: false,
+        collectionName: collectionName,
+        messege: 'Collection has been deleted',
+      });
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  });
+
   app.get(`/db/collections`, async (req, res) => {
     try {
       const dbCollections = await mongoose.connection.db

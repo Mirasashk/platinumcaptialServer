@@ -57,6 +57,14 @@ const leadLookUp = async (req, res) => {
   return leads;
 };
 
+const collectionDelete = async (req, res) => {
+  let collectionName = req.body.collectionName;
+
+  await mongoose.connection.db.dropCollection(collectionName);
+
+  return collectionName;
+};
+
 const leadDetails = async (req, res) => {
   let lead = await mongoose.connection.db
     .collection('Leads')
@@ -70,3 +78,4 @@ const leadDetails = async (req, res) => {
 
 exports.leadDetails = leadDetails;
 exports.leadLookUp = leadLookUp;
+exports.collectionDelete = collectionDelete;

@@ -4,21 +4,52 @@ const ObjectID = require('mongodb').ObjectId;
 const leadLookUp = async (req, res) => {
   console.log(req.body);
   let term = req.body.term;
+  let collection = req.body.collection;
   let leads = null;
 
   if (req.body.category == 'phone') {
     leads = await mongoose.connection.db
-      .collection('Leads')
+      .collection(collection)
       .find({ phoneHome: term })
       .toArray();
+    console.log(leads);
+
+    if (leads.length == 0) {
+      leads = await mongoose.connection.db
+        .collection(collection)
+        .find({ phoneHome2: term })
+        .toArray();
+      console.log(leads);
+    }
+    if (leads.length == 0) {
+      leads = await mongoose.connection.db
+        .collection(collection)
+        .find({ phoneMobile: term })
+        .toArray();
+      console.log(leads);
+    }
+    if (leads.length == 0) {
+      leads = await mongoose.connection.db
+        .collection(collection)
+        .find({ phoneWork: term })
+        .toArray();
+      console.log(leads);
+    }
+    if (leads.length == 0) {
+      leads = await mongoose.connection.db
+        .collection(collection)
+        .find({ phoneWork2: term })
+        .toArray();
+      console.log(leads);
+    }
   } else if (req.body.category == 'email') {
     leads = await mongoose.connection.db
-      .collection('Leads')
+      .collection(collection)
       .find({ email: term })
       .toArray();
   } else if (req.body.category == 'lastName') {
     leads = await mongoose.connection.db
-      .collection('Leads')
+      .collection(collection)
       .find({ lastName: term })
       .toArray();
   }

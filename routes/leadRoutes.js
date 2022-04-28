@@ -33,7 +33,7 @@ module.exports = (app) => {
       let collectionName = req.body.name;
       let leads = await mongoose.connection.db
         .collection(collectionName)
-        .find()
+        .find({ lastName: { $regex: /^M/ } })
         .limit(50000)
         .toArray();
 

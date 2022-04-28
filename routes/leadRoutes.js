@@ -33,8 +33,8 @@ module.exports = (app) => {
       let collectionName = req.body.name;
       let leads = await mongoose.connection.db
         .collection(collectionName)
-        .find({ emailAddress: { $regex: /^p/ } })
-        .limit(50000)
+        .find()
+        .limit(30000)
         .toArray();
 
       setTimeout(() => {

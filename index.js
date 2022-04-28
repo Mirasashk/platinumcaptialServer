@@ -26,12 +26,12 @@ mongoose.connect(
 app.use(cors(corsOptions));
 // Serve static files
 app.use(express.static(path.join(__dirname, 'client', 'build')));
-app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.json({ limit: '512mb' }));
 app.use(
   bodyParser.urlencoded({
-    limit: '50mb',
+    limit: '512mb',
     extended: true,
-    parameterLimit: 50000,
+    parameterLimit: 100000000,
   })
 );
 

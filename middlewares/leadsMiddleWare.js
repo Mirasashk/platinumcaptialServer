@@ -67,7 +67,6 @@ const collectionDelete = async (req, res) => {
 
 const leadDetails = async (req, res) => {
   let lead = await mongoose.connection.db
-    .collection('Leads')
     .findOne({ _id: new ObjectID(req.body._id) })
     .then((data) => {
       return data;

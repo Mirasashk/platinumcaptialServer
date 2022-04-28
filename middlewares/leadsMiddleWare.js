@@ -45,7 +45,7 @@ const leadLookUp = async (req, res) => {
   } else if (req.body.category == 'email') {
     leads = await mongoose.connection.db
       .collection(collection)
-      .find({ email: term })
+      .find({ emailAddress: term })
       .toArray();
   } else if (req.body.category == 'lastName') {
     leads = await mongoose.connection.db

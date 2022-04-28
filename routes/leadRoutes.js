@@ -34,6 +34,7 @@ module.exports = (app) => {
       let leads = await mongoose.connection.db
         .collection(collectionName)
         .find()
+        .limit(30000)
         .toArray();
 
       setTimeout(() => {

@@ -4,55 +4,73 @@ const ObjectID = require('mongodb').ObjectId;
 const leadLookUp = async (req, res) => {
   console.log(req.body);
   let term = req.body.term;
-  let collection = req.body.collection;
-  let leads = null;
+  let leads = {
+    leadsDetail: [],
+    collectionName: '',
+  };
+  let tempLeads = [];
+  let allCollections = await mongoose.connection.db
+    .listCollections()
+    .toArray();
 
-  if (req.body.category == 'phone') {
-    leads = await mongoose.connection.db
-      .collection(collection)
-      .find({ phoneHome: term })
-      .toArray();
-    console.log(leads);
+  console.log(typeof leads.leadsDetail);
 
-    if (leads.length == 0) {
-      leads = await mongoose.connection.db
-        .collection(collection)
-        .find({ phoneHome2: term })
-        .toArray();
-      console.log(leads);
+  for (var i in allCollections) {
+    if (tempLeads.length == 0) {
+      leads.collectionName = allCollections[i].name;
+      if (req.body.category == 'phone') {
+        tempLeads = await mongoose.connection.db
+          .collection(allCollections[i].name)
+          .find({ phoneHome: term })
+          .toArray();
+        console.log(tempLeads);
+
+        if (tempLeads.length == 0) {
+          tempLeads = await mongoose.connection.db
+            .collection(allCollections[i].name)
+            .find({ phoneHome2: term })
+            .toArray();
+          console.log(tempLeads);
+        }
+        if (tempLeads.length == 0) {
+          tempLeads = await mongoose.connection.db
+            .collection(allCollections[i].name)
+            .find({ phoneMobile: term })
+            .toArray();
+          console.log(tempLeads);
+        }
+        if (tempLeads.length == 0) {
+          tempLeads = await mongoose.connection.db
+            .collection(allCollections[i].name)
+            .find({ phoneWork: term })
+            .toArray();
+          console.log(tempLeads);
+        }
+        if (tempLeads.length == 0) {
+          tempLeads = await mongoose.connection.db
+            .collection(allCollections[i].name)
+            .find({ phoneWork2: term })
+            .toArray();
+          console.log(tempLeads);
+        }
+      } else if (req.body.category == 'email') {
+        leads.collectionName = allCollections[i].name;
+        tempLeads = await mongoose.connection.db
+          .collection(allCollections[i].name)
+          .find({ emailAddress: term })
+          .toArray();
+      } else if (req.body.category == 'lastName') {
+        leads.collectionName = allCollections[i].name;
+        tempLeads = await mongoose.connection.db
+          .collection(allCollections[i].name)
+          .find({ lastName: term })
+          .toArray();
+      }
     }
-    if (leads.length == 0) {
-      leads = await mongoose.connection.db
-        .collection(collection)
-        .find({ phoneMobile: term })
-        .toArray();
-      console.log(leads);
-    }
-    if (leads.length == 0) {
-      leads = await mongoose.connection.db
-        .collection(collection)
-        .find({ phoneWork: term })
-        .toArray();
-      console.log(leads);
-    }
-    if (leads.length == 0) {
-      leads = await mongoose.connection.db
-        .collection(collection)
-        .find({ phoneWork2: term })
-        .toArray();
-      console.log(leads);
-    }
-  } else if (req.body.category == 'email') {
-    leads = await mongoose.connection.db
-      .collection(collection)
-      .find({ emailAddress: term })
-      .toArray();
-  } else if (req.body.category == 'lastName') {
-    leads = await mongoose.connection.db
-      .collection(collection)
-      .find({ lastName: term })
-      .toArray();
   }
+
+  console.log(tempLeads);
+  leads.leadsDetail = [...tempLeads];
 
   return leads;
 };
@@ -67,12 +85,12 @@ const collectionDelete = async (req, res) => {
 
 const leadDetails = async (req, res) => {
   console.log(req.body);
+  let collectionName = req.body.collection;
+  let leadId = req.body._id;
+
   let lead = await mongoose.connection.db
-    .collection(req.body.collection)
-    .findOne({ _id: new ObjectID(req.body._id) })
-    .then((data) => {
-      return data;
-    });
+    .collection(collectionName)
+    .findOne({ _id: leadId });
 
   return lead;
 };

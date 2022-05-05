@@ -17,7 +17,6 @@ module.exports = (app) => {
   });
 
   app.post(`/leads/leadDetails`, async (req, res) => {
-    console.log(req.body);
     let lead = await leadsMiddleWare.leadDetails(req);
 
     res.status(200).send({
